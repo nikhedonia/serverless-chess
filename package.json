@@ -1,0 +1,19 @@
+{
+  "name": "serverless-chess",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "chess.js": "^0.10.2",
+    "git": "^0.1.5",
+    "react": "^16.4.2",
+    "react-chess": "^1.1.0",
+    "react-dom": "^16.4.2",
+    "react-scripts": "1.1.5"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test --env=jsdom",
+    "eject": "react-scripts eject"
+  }
+}
