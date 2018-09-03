@@ -5,6 +5,7 @@
   "dependencies": {
     "chess.js": "^0.10.2",
     "git": "^0.1.5",
+    "lz-string": "^1.4.4",
     "react": "^16.4.2",
     "react-chess": "^1.1.0",
     "react-dom": "^16.4.2",
