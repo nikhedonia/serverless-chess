@@ -73,14 +73,14 @@ class App extends Component {
     const gameOver = chess.game_over(); 
     const turn = chess.turn() =="w"? "white's turn" : "black's turn";
 
+    if (gameOver) {
+      return <div> {chess.turn()=="w"? "Black Won" : "White Won"}  </div>
+    }
+
     if (check) {
       return <div>
         <div> {turn} - you are in Check! </div>
       </div>
-    }
-
-    if (gameOver) {
-      return <div> {this.chess.turn()=="w"? "Black Won" : "White Won"}  </div>
     }
 
     return <div> {turn} </div>
@@ -146,7 +146,7 @@ class App extends Component {
               }
               onMouseEnter={()=>{
                 this.setState({undo: this.state.history.length-i-1})
-                window.location.hash = window.btoa(this.history(chess).join('|'));
+                setTimeout(()=>window.location.hash = window.btoa(this.history(chess).join('|')));
               }}>
                 {move} 
               </li>
