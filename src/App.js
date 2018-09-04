@@ -6,9 +6,13 @@ import engine from "chess.js";
 class App extends Component {
 
   movesFromHash(hash) {
+    try{
     return window.atob(hash.slice(1))
       .split('|')
-      .filter(x=>x!='');
+        .filter(x=>x!='');
+    } catch (e) {
+      return [];
+    }
   }
 
   getEngine(moves) {
@@ -48,8 +52,20 @@ class App extends Component {
     };
   }
 
-  shouldComponentUpdate() {
-    return true; 
+  componentWillMount() {
+    this.listener = window.addEventListener('popstate', () => {
+      console.log(window.location.hash);
+      const moves = this.movesFromHash(window.location.hash);
+      if (moves.every( (m, i) => this.state.history[i] == m )) {
+        this.setState({undo: this.state.history.length - moves.length});
+      } else {
+        this.setState({history: moves, undo:0});
+      }
+    });
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener(this.listener);
   }
 
   renderState(chess) {
@@ -97,20 +113,21 @@ class App extends Component {
         }}>
 
         <Board 
-          pieces={this.pieces(chess)}
+          pieces={this.state.error? [] : this.pieces(chess)}
           onMovePiece={ (piece, from, to) => {
             const chess = this.getEngine(this.history());
             const move = `${piece.name}${from}-${to}`;
             const m = chess.move(move,  {sloppy: true});
 
-            if(!m) this.setState({history:[]});
+            if (!m) this.setState({error: true});
 
             setTimeout(() => this.setState({
               history: chess.history(),
-              undo: 0
+              undo: 0,
+              error: false
             }));
 
-            window.location.hash = window.btoa(this.history(chess).join('|'));
+            window.location.hash = window.btoa(chess.history().join('|'));
           }}
 
           onDragStart={ (piece, from) => {
